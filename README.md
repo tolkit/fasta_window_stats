@@ -2,7 +2,7 @@
 
 ## Main
 
-A start on some basic statistics we might want to compute on fasta/q files. Implemented so far is GC%, GC skew, and unique kmer counts in sliding (and optionally overlapping) windows. It could be cool if people could look at the code and find ways to make it faster. Some bits have been poached from other sources, which have been indicated in the source files.
+A start on some basic statistics we might want to compute on fasta/q files. Implemented so far is GC%, GC skew, and unique kmer counts in sliding (and optionally overlapping) windows. It could be cool if people could look at the code and find ways to make it faster. Additional functionality hopefully soon, maybe some *actual* statistics in each window. Some bits have been poached from other sources, which have been indicated in the source files.
 
 Total number of contigs processed and the total sequence length processed are also just printed out at the end.
 
@@ -31,6 +31,6 @@ I've only tested this so far on the two test files in this repo.
 
 The main script uses itertools, sys, os, re, collections, argparse, shutil.
 
-### Output 
+### Output visualisation
 
-If you clone this locally, the example.html should work... but I made a private example at https://observablehq.com/d/66426ebaca01559d. 
+If you clone this locally and fire up a server, the example.html should work... but I made a private example at https://observablehq.com/d/66426ebaca01559d. 

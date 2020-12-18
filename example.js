@@ -1,3 +1,6 @@
+// with much help from https://observablehq.com/@deckerlukas/line-graph-with-moving-average
+// and the function below https://observablehq.com/@d3/moving-average
+
 // compute moving average
 function movingAverage(values, N) {
     let i = 0;
@@ -46,23 +49,30 @@ const data = d3.csv("./Athaliana_genome/Athaliana_genome_stats.csv", function (d
 })
 
 data.then(function (data) {
-    // do a little wrangling
-    // test on the first chromosome
     // what are the unique fasta headers?
     const chromosomes = [...new Set(data.map(d => d.ID))]
+    const variables = Object.keys(data[0]).slice(2, 5) // the keys of the data
 
+    // populate the chromosome dropdown
     d3.select("#chromosomeDropdown")
-        .selectAll('myOptions')
+        .selectAll('myOptionsChrom')
         .data(chromosomes)
-        .enter()
-        .append('option')
+        .join('option')
         .text(d => d) // text showed in the menu
         .attr("value", d => d) // corresponding value returned by the button
 
+    // populate the variable dropdown
+    d3.select("#VariableDropdown")
+        .selectAll('myOptionsVar')
+        .data(variables)
+        .join('option')
+        .text(d => d) // text showed in the menu
+        .attr("value", d => d) // corresponding value returned by the button
+
+    // do a little wrangling
+    // test on the first chromosome
     let filteredData = d3.group(data, d => d.ID).get(chromosomes[0])
-
-    let filteredDataMA = movingAverage(filteredData.map(d => d.GCPercent), 100) // work out moving average input later
-
+    let filteredDataMA = movingAverage(filteredData.map(d => d[variables[0]]), 100) // work out moving average input later
     for (let i = 0; i < filteredData.length; i++) {
         filteredData[i].MA = filteredDataMA[i];
     }
@@ -71,7 +81,7 @@ data.then(function (data) {
     let xMin = 0;
     let xMax = d3.max(filteredData.map(d => d.bin));
     let yMin = 0;
-    let yMax = d3.max(filteredData.map(d => d.GCPercent))
+    let yMax = d3.max(filteredData.map(d => d[variables[0]]))
 
     const x = d3
         .scaleLinear()
@@ -103,12 +113,12 @@ data.then(function (data) {
     const line = d3
         .line()
         .x(d => x(d.bin))
-        .y(d => y(d.GCPercent))
+        .y(d => y(d[variables[0]]))
 
     const line2 = d3
         .line()
         .x(d => x2(d.bin))
-        .y(d => y2(d.GCPercent))
+        .y(d => y2(d[variables[0]]))
 
     const movAvgLine = d3
         .line()
@@ -228,23 +238,37 @@ data.then(function (data) {
         .attr('class', "brush")
         .call(brush);
 
-    function updateChart(movingAverageBin, chromosome) {
 
+    // add here the variable of interest
+    function updateChart(movingAverageBin, chromosome, variable) {
+
+        // update the data
         let filteredData = d3.group(data, d => d.ID).get(chromosome)
-
-        let filteredDataMA = movingAverage(filteredData.map(d => d.GCPercent), movingAverageBin) // work out moving average input later
-
+        let filteredDataMA = movingAverage(filteredData.map(d => d[variable]), movingAverageBin) // work out moving average input later
         for (let i = 0; i < filteredData.length; i++) {
             filteredData[i].MA = filteredDataMA[i];
         }
-
+        // update the x scales
         x.domain([xMin, d3.max(filteredData.map(d => d.bin))])
         x2.domain([xMin, d3.max(filteredData.map(d => d.bin))])
+        // update the y scales
+        y.domain([variable === "GCSkew" ? d3.min(filteredData.map(d => d[variable])) : 0, d3.max(filteredData.map(d => d[variable]))])
+        y2.domain([variable === "GCSkew" ? d3.min(filteredData.map(d => d[variable])) : 0, d3.max(filteredData.map(d => d[variable]))])
+
+        // apply changes to the x axis
         svg.selectAll('.axis--x')
             .transition()
             .duration(1000)
             .call(xAxis)
 
+        // apply the changes to the y axis
+
+        // update the lines
+        line.y(d => y(d[variable]))
+        line2.y(d => y2(d[variable]))
+
+
+        // apply changes to the lines
         movingAverageLine
             .datum(filteredData)
             .attr('d', movAvgLine)
@@ -260,12 +284,23 @@ data.then(function (data) {
     // Listen to the slider
     d3.select("#movingAverage").on("change", function (d) {
         selectedValue = this.value
-        updateChart(selectedValue, d3.select("#chromosomeDropdown").node().value)
+        updateChart(selectedValue, 
+            d3.select("#chromosomeDropdown").node().value, 
+            d3.select("#VariableDropdown").node().value)
     })
-    // Listen to the dropdown
+    // Listen to the chromosome dropdown
     d3.select("#chromosomeDropdown").on("change", function (d) {
         selectedGroup = this.value
-        updateChart(d3.select("#movingAverage").node().value, selectedGroup)
+        updateChart(d3.select("#movingAverage").node().value, 
+        selectedGroup, 
+        d3.select("#VariableDropdown").node().value)
+    })
+    // Listen to the variable dropdown
+    d3.select("#VariableDropdown").on("change", function (d) {
+        selectedGroup = this.value
+        updateChart(d3.select("#movingAverage").node().value, 
+        d3.select("#chromosomeDropdown").node().value, 
+        selectedGroup)
     })
 
     return svg.node();
