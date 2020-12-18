@@ -20,7 +20,7 @@ optional arguments:
   -k KMERLENGTH, --kmerLength KMERLENGTH
                         The length of kmer to calculate diversity of. Default is 4 - i.e. unique tetranucleotide frequencies
   -o OUTDIR, --outdir OUTDIR
-                        The output directory for GC stats
+                        The output directory for fasta stats
 ```
 
 Currently output is to a CSV in an output directory.
@@ -30,3 +30,7 @@ I've only tested this so far on the two test files in this repo.
 ## Dependencies
 
 The main script uses itertools, sys, os, re, collections, argparse, shutil.
+
+### Output 
+
+If you clone this locally, the example.html should work... but I made a private example at https://observablehq.com/d/66426ebaca01559d. 

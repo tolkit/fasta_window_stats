@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>Chromosome assembly stats vis</title>
+        <script src="https://d3js.org/d3.v6.min.js"></script> 
+
+        <style>
+
+            #movingAverageOut {
+                font-family: sans-serif; 
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <h1>Chromosome stats for <i>A. thaliana</i></h1>
+        <p>Use the dropdown to select the region of interest, and adjust the slider to look at the moving GC average across this region. The smaller graph can be used to click and drag to investigate a region of interest in detail.</p>
+        <select id="chromosomeDropdown"></select>
+
+        <input type="range" name="movingAverage" id=movingAverage min="1" max="1000" value="500" oninput="this.nextElementSibling.value = this.value">
+        <output>500</output>
+
+        <div id="vis"></div>
+
+        <script src="example.js"></script>
+        
+    </body>
+
+</html>
