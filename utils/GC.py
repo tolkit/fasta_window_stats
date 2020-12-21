@@ -9,40 +9,40 @@ def GCStats(sequence, window):
     sequence = sequence.upper()
     # the four bases
     nucleotides = ['A', 'C', 'G', 'T'] 
-    nucleotide_counts = {}
+    nucleotideCounts = {}
 
     # iterate over each base in the string
-    for base in sequence:
+    for nucleotides in sequence:
+        # count the bases
+        count = sequence.count(nucleotides)
+        nucleotideCounts[nucleotides] = count
         # catch missing key/value pairs
-        if 'A' not in nucleotide_counts:
-            print("[WARNING] \tbase A not present in window " + str(window))
-            nucleotide_counts['A'] = 0
-        elif 'C' not in nucleotide_counts:
-            print("[WARNING] \tbase C not present in window " + str(window))
-            nucleotide_counts['C'] = 0
-        elif 'G' not in nucleotide_counts:
-            print("[WARNING] \tbase G not present in window " + str(window))
-            nucleotide_counts['G'] = 0
-        elif 'T' not in nucleotide_counts:
-            print("[WARNING] \tbase T not present in window " + str(window))
-            nucleotide_counts['T'] = 0
-        # and count the bases
-        count = sequence.count(base)
-        nucleotide_counts[base] = count
+        if 'A' not in nucleotideCounts:
+            #print("[WARNING] \tbase A not present in window " + str(window))
+            nucleotideCounts['A'] = 0
+        elif 'C' not in nucleotideCounts:
+            #print("[WARNING] \tbase C not present in window " + str(window))
+            nucleotideCounts['C'] = 0
+        elif 'G' not in nucleotideCounts:
+            #print("[WARNING] \tbase G not present in window " + str(window))
+            nucleotideCounts['G'] = 0
+        elif 'T' not in nucleotideCounts:
+            #print("[WARNING] \tbase T not present in window " + str(window))
+            nucleotideCounts['T'] = 0
 
     # GC percent in a sequence
-    GC = nucleotide_counts['G'] + nucleotide_counts['C']
+    GC = nucleotideCounts['G'] + nucleotideCounts['C']
     sums = 0
-    for key in nucleotide_counts:
-        sums += nucleotide_counts[key]
+    for key in nucleotideCounts:
+        sums += nucleotideCounts[key]
     percentGC = (GC / sums) * 100
 
     # GC skew!
-    numerator = nucleotide_counts['G'] - nucleotide_counts['C']
-    denominator = nucleotide_counts['G'] + nucleotide_counts['C']
+    numerator = nucleotideCounts['G'] - nucleotideCounts['C']
+    denominator = nucleotideCounts['G'] + nucleotideCounts['C']
     if denominator == 0:
         GCskew = 0
     else:
         GCskew = numerator/denominator
 
-    return percentGC, GCskew
+    return percentGC, GCskew, nucleotideCounts

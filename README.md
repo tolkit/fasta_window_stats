@@ -2,9 +2,25 @@
 
 ## Main
 
-A start on some basic statistics we might want to compute on fasta/q files. Implemented so far is GC%, GC skew, and unique kmer counts in sliding (and optionally overlapping) windows. It could be cool if people could look at the code and find ways to make it faster. Additional functionality hopefully soon, maybe some *actual* statistics in each window. Some bits have been poached from other sources, which have been indicated in the source files.
+A start on some basic statistics we might want to compute on fasta files. Implemented so far is GC%, GC skew, and unique kmer counts in sliding (and optionally overlapping) windows. It could be cool if people could look at the code and find ways to make it faster. Additional functionality hopefully soon, maybe some *actual* statistics in each window. Some bits have been poached from other sources, which have been indicated in the source files.
 
-Total number of contigs processed and the total sequence length processed are also just printed out at the end.
+A general statistics file is also generated, containing number of contigs (chromosomes) processed, total sequence length, global GC%, and L/N10-50. e.g.
+
+    Arguments used: -f Athaliana_genome/Athaliana_1_5_m_c.fasta
+    Total number of contigs processed: 7
+    Total sequence length processed: 119668634
+    Global GC%: 0.3605598671007913
+    L10: 0
+    N10: 30427671
+    L20: 0
+    N20: 30427671
+    L30: 1
+    N30: 26975502
+    L40: 1
+    N40: 26975502
+    L50: 2
+    N50: 23459830
+
 
 ```
 usage: fastaStats.py [-h] -f FASTA [-w WINDOWSIZE] [-v OVERLAP] [-k KMERLENGTH] [-o OUTDIR]
@@ -23,13 +39,15 @@ optional arguments:
                         The output directory for fasta stats
 ```
 
-Currently output is to a CSV in an output directory.
+## Speed
 
-I've only tested this so far on the two test files in this repo.
+I re-ran the updated script on the genome of *Arabidopsis thaliana* again and all 5 chromosomes, plus the plastid/mitochondrion took:
 
-## Dependencies
+real	15m47.850s
+user	15m43.616s
+sys	0m2.366s
 
-The main script uses itertools, sys, os, re, collections, argparse, shutil.
+A significant improvement to ~2 hours. 
 
 ### Output visualisation
 

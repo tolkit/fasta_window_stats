@@ -1,0 +1,14 @@
+Arguments used: -f Athaliana_genome/Athaliana_1_5_m_c.fasta
+Total number of contigs processed: 7
+Total sequence length processed: 119668634
+Global GC%: 0.3605598671007913
+L10: 0
+N10: 30427671
+L20: 0
+N20: 30427671
+L30: 1
+N30: 26975502
+L40: 1
+N40: 26975502
+L50: 2
+N50: 23459830

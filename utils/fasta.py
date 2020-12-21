@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-# parse a fasta file
-# see https://github.com/lstevens17/busco2phylo-nf/blob/main/busco2fasta.py (thanks Lewis!)
+from itertools import groupby
 
-def parse_fasta(fasta_file, prefix):
-	with open(fasta_file) as fasta:
-		fasta_dict = {}
-		for line in fasta:
-			if line.startswith(">"):
-				header = ">" + prefix + "." + line.rstrip("\n").replace(">", "").replace(",", "")#.split(" ")[0]
-				fasta_dict[header] = ''
-			else:
-				fasta_dict[header] += line.rstrip("\n")
-	return fasta_dict
+# parse a fasta file
+# poached from https://github.com/MikeTrizna/assembly_stats/blob/master/assembly_stats/assembly_stats.py
+def parse_fastai(fasta_file):
+    fh = open(fasta_file)
+    fa_iter = (x[1] for x in groupby(fh, lambda line: line[0] == ">"))
+    for header in fa_iter:
+        # drop the ">"
+        header = next(header)[1:].strip()
+        # join all sequence lines to one.
+        seq = "".join(s.upper().strip() for s in next(fa_iter))
+        yield header, seq
