@@ -4,7 +4,7 @@
 # not adjusted for missing data..?
 # Is GC skew important??
 
-def GCStats(sequence, window):
+def GCStats(sequence):
     # make sure we use only upper case
     sequence = sequence.upper()
     # the four bases

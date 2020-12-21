@@ -40,13 +40,17 @@ optional arguments:
                         The output directory for fasta stats
 ```
 
+Note that the script currently only works on unzipped fasta files.
+
 ## Speed
 
 I re-ran the updated script on the genome of *Arabidopsis thaliana* again and all 5 chromosomes, plus the plastid/mitochondrion took:
 
+```
 real	15m47.850s
 user	15m43.616s
 sys	0m2.366s
+```
 
 A significant improvement to ~2 hours. 
 

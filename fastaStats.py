@@ -66,7 +66,7 @@ for header, sequence in fasta.parse_fastai(input_fasta):
         seq = ''.join(window)
         # calculate GC stats
         currentWindow = str(bint) + '-' + str(bint + windowSize)
-        PerGC, GCSkew, nucleotideCounts = GC.GCStats(seq, currentWindow)
+        PerGC, GCSkew, nucleotideCounts = GC.GCStats(seq)
         # calculate kmer stats
         UniqueKmers = kmers.getUniqueKmers(seq, kmerLength)
         formattedHeader = header.replace(">.", "")
