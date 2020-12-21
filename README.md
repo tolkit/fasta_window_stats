@@ -21,6 +21,7 @@ A general statistics file is also generated, containing number of contigs (chrom
     L50: 2
     N50: 23459830
 
+## Usage
 
 ```
 usage: fastaStats.py [-h] -f FASTA [-w WINDOWSIZE] [-v OVERLAP] [-k KMERLENGTH] [-o OUTDIR]
