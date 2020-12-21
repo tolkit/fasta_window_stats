@@ -18,16 +18,12 @@ def GCStats(sequence, window):
         nucleotideCounts[nucleotides] = count
         # catch missing key/value pairs
         if 'A' not in nucleotideCounts:
-            #print("[WARNING] \tbase A not present in window " + str(window))
             nucleotideCounts['A'] = 0
         elif 'C' not in nucleotideCounts:
-            #print("[WARNING] \tbase C not present in window " + str(window))
             nucleotideCounts['C'] = 0
         elif 'G' not in nucleotideCounts:
-            #print("[WARNING] \tbase G not present in window " + str(window))
             nucleotideCounts['G'] = 0
         elif 'T' not in nucleotideCounts:
-            #print("[WARNING] \tbase T not present in window " + str(window))
             nucleotideCounts['T'] = 0
 
     # GC percent in a sequence
