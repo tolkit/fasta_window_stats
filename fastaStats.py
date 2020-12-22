@@ -30,7 +30,7 @@ kmerLength = args.kmerLength
 outdir = args.outdir
 
 if os.path.exists(outdir):
-		print("[WARNING] \tRemoving existing output directory ('" + outdir + "') and its contents...")
+		print("[WARNING] \tRemoving existing output directory ('" + outdir + "') and its contents.")
 		shutil.rmtree(outdir)
 
 os.mkdir(outdir)
@@ -61,7 +61,11 @@ for header, sequence in fasta.parse_fastai(input_fasta):
 
     # begin sliding windows
     wins = windows.slidingWindow(sequence, size=windowSize, step=overlap, fillvalue="-")
+    # let's count the windows
+    i = 0
     for window in wins:
+        if i % 100 == 0:
+            print("[STATUS] \t" + str(i) + " windows processed for " + str(header) + ".", end = "\r")
         # get the sequence
         seq = ''.join(window)
         # calculate GC stats
@@ -79,8 +83,9 @@ for header, sequence in fasta.parse_fastai(input_fasta):
             bint += overlap
         else:
             bint = 0
+        i += 1
     # end sliding windows
-    print("[STATUS] \t" + "contig " + str(fastaCount) + " processed.")
+    print("\n[STATUS] \t" + "contig " + str(fastaCount) + " processed.")
 
 GCperWindowCSV.close()
 
