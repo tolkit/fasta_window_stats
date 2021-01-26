@@ -44,7 +44,7 @@ GCperWindowCSV = open(outdir + '/' + 'FastaStats.csv', 'w')
 GCperWindowCSV.write('ID,bin,GCPercent,GCSkew,UniqueKmers\n')
 
 # bin integer
-bint = 0
+bin_int = 0
 # keep track of fastas being processed
 fastaCount = 0
 totalSeqLength = 0
@@ -69,7 +69,7 @@ for header, sequence in fasta.parse_fastai(input_fasta):
         # get the sequence
         seq = ''.join(window)
         # calculate GC stats
-        currentWindow = str(bint) + '-' + str(bint + windowSize)
+        currentWindow = str(bin_int) + '-' + str(bin_int + windowSize)
         PerGC, GCSkew, nucleotideCounts = GC.GCStats(seq)
         # calculate kmer stats
         UniqueKmers = kmers.getUniqueKmers(seq, kmerLength)
@@ -79,10 +79,10 @@ for header, sequence in fasta.parse_fastai(input_fasta):
         # keep running total of nucleotide counts
         totalNucleotideCounts = dictionaries.mergeDictionaries(totalNucleotideCounts, nucleotideCounts)
 
-        if bint < seq_length - overlap:
-            bint += overlap
+        if bin_int < seq_length - overlap:
+            bin_int += overlap
         else:
-            bint = 0
+            bin_int = 0
         i += 1
     # end sliding windows
     print("\n[STATUS] \t" + "contig " + str(fastaCount) + " processed.")
